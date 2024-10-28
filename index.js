@@ -3,7 +3,7 @@ const { Command } = require('commander');
 const program = new Command();
 
 program
-  .option('-i, --input <path>', 'Path to input JSON file', 'data.json') // default name
+  .option('-i, --input <path>', 'Path to input JSON file') // без значення за замовчуванням
   .option('-o, --output <path>', 'Path to output file')
   .option('-d, --display', 'Display result in console')
   .parse(process.argv);
@@ -27,12 +27,11 @@ const inputData = fs.readFileSync(options.input, 'utf-8');
 let jsonData;
 
 try {
-  jsonData = JSON.parse(inputData); // Parse the JSON data
+  jsonData = JSON.parse(inputData); 
 } catch (err) {
   console.error("Error parsing JSON:", err.message);
   process.exit(1);
 }
-
 
 if (!Array.isArray(jsonData)) {
   console.error("Input data is not an array");
@@ -40,9 +39,9 @@ if (!Array.isArray(jsonData)) {
 }
 
 
-let maxRate = Number.NEGATIVE_INFINITY; // Start with the lowest possible number
+let maxRate = Number.NEGATIVE_INFINITY; 
 jsonData.forEach(entry => {
-  // Check if the 'rate' field exists and is a number
+
   if (typeof entry.rate === 'number' && entry.rate > maxRate) {
     maxRate = entry.rate;
   }
@@ -61,7 +60,6 @@ const outputMessage = `Максимальний курс: ${maxRate}`;
 if (options.display) {
   console.log(outputMessage);
 }
-
 
 if (options.output) {
   fs.writeFileSync(options.output, outputMessage);
